@@ -6,8 +6,17 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:29 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/11/26 15:16:35 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:03:31 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
+char	*ft_strjoin(const char *s1, const char *s2)
+{
+	char	*res;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+}

@@ -1,0 +1,4 @@
+Voici un test pour apprendre a utiliser la fonction read
+test1
+2
+3
