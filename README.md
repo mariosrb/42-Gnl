@@ -1,2 +1,2 @@
 # 42-gnl
-Get next lime
+Get next line
