@@ -6,11 +6,38 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:29 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/11/28 16:00:57 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:43:11 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	char	*str;
+	size_t	len_s;
+
+	if (!s)
+		return (NULL);
+	len_s = ft_strlen(s);
+	if (start > len_s)
+		return (ft_strdup(""));
+	if (len > len_s - start)
+		len = len_s - start;
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (s[start] && i < len)
+	{
+		str[i] = s[start];
+		i++;
+		start++;
+	}
+	str[i] = '\0';
+	return (str);
+}
 
 char	*ft_strdup(const char *s1)
 {
