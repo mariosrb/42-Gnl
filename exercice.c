@@ -1,16 +1,20 @@
 
 #include "get_next_line.h"
 
-int	is_chr(char *s)
+char	*ft_strchr(const char *s, int c)
 {
-	int i = 0;
-	while (s[i])
+	unsigned char	u_c;
+
+	u_c = (unsigned char)c;
+	while (*s)
 	{
-		if (s[i] == '\n')
-			return 1;
-		i++;
+		if (*s == u_c)
+			return ((char *)s);
+		s++;
 	}
-	return 0;
+	if (u_c == '\0')
+		return ((char *)s);
+	return (NULL);
 }
 
 char	*gnl(int fd)
