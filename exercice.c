@@ -27,5 +27,8 @@ int	main(int ac, char **av)
 		write (2, "Read failed", 11);
 
 	close (fd);
+
+
+
 	return (0);
 }
