@@ -1,7 +1,7 @@
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+/*char	*ft_strchr(const char *s, int c)
 {
 	unsigned char	u_c;
 
@@ -15,23 +15,35 @@ char	*ft_strchr(const char *s, int c)
 	if (u_c == '\0')
 		return ((char *)s);
 	return (NULL);
-}
+}*/
 
 char	*gnl(int fd)
 {
-	char	*cache;
-	static	char	*temp;
-	char	buffer[BUFFER_SIZE];
+	char	*cache = NULL;
+	static char	*temp;
+	char	*buffer = NULL;
 	int		nb_read;
+	char	*new_temp;
 
+	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	
 	nb_read = read(fd, buffer, BUFFER_SIZE);
-	temp = ft_strdup((const char *)buffer);
-	if (!temp)
-		return (NULL);
-	if (!is_chr(temp))
-		cache = ft_strdup((const char *)temp);
+	while (nb_read > 0)
+	{
+		temp = ft_strdup(buffer);
+		if (!cache)
+			cache = ft_strdup(temp);
+		else
+		{
+			cache = ft_strjoin(cache, temp);
+		}
+		nb_read = read(fd, buffer, BUFFER_SIZE);
+		buffer[nb_read] = '\0';
+	}
 	return (cache);
 }
+
+
 
 int	main(int ac, char **av)
 {
