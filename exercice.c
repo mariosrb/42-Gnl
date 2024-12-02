@@ -95,9 +95,35 @@ char	*extract_line(char *input)
 	return (res);
 }
 
+char	*extract(char *input)
+{
+	static char	*temp;
+	char		*res;
+	int			i;
+
+	i = 0;
+	while (input[i] != '\n' && input[i])
+		i++;
+	if (input[i] == '\n')
+		res = ft_substr(input, 0, i + 1);
+	else
+		res = ft_substr(input, 0, i);
+	if (!res)
+		return (NULL);
+	if (input[i] == '\n' && input[i + 1])
+		temp = ft_strdup(&input[i + 1]);
+	else
+		{
+			free(temp);
+			temp = NULL;
+		}
+	//printf("%s\n", temp);
+	return (res);
+}
+
 int	main(int ac, char **av)
 {
-	printf("%s\n", extract_line("Bonjour\nje suis un chat"));
+	printf("%s\n", extract("Bonjour\nje suis un chat"));
 	// int fd = open(av[1], O_RDONLY);
 	// printf("%s\n", gnl(fd));
 	// close (fd);
