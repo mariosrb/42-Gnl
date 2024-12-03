@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:08:56 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/03 14:28:13 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:09:33 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ static char	*cleanup(char *s1, char *s2)
 	return (NULL);
 }
 
+char	*share_and_extract(char *storage)
+{
+	// Extraire de storage jusqua \n (inclu)
+	// Mettre a jour storage (garder ce qu'il y a apres \n
+	int		i;
+	char	*line;
+
+	i = 0;
+	printf("%s\n", storage);
+	while (storage[i] != '\n' && storage[i])
+		i++;
+	line = ft_substr(storage, 0, i + 1);
+	printf("%s", line);
+	return (line);
+}
+
 char	*read_and_stock(int fd, char *storage)
 {
 	char	*buffer;
@@ -65,7 +81,7 @@ char	*read_and_stock(int fd, char *storage)
 	while (!ft_strchr(storage, '\n') && (nb_read = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		if (nb_read < 0)
-			return (free(storage), free(buffer), NULL);
+			return (cleanup(buffer, storage));
 		buffer[nb_read] = '\0';
 		temp = ft_strjoin(storage, buffer);
 		if (!temp)
@@ -77,16 +93,17 @@ char	*read_and_stock(int fd, char *storage)
 	return (storage);
 }
 
-
 char	*get_next_line(int fd)
 {
-	char			*line;
-	static char		*storage = NULL;
+	static char *storage = NULL;
+	char	*line;
 	
 	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
-	printf("--%s\n--", read_and_stock(fd, storage));
+	//printf("--%s--\n", read_and_stock(fd, storage));
+	storage = read_and_stock(fd, storage);
+	line = share_and_extract(storage);
 	return (line);
 }
 
