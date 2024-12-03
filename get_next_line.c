@@ -6,20 +6,14 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:08:56 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/02 12:09:23 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:28:13 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// Je dois remplir ma variable temporaire de ce que je nai pas encore utilise 
-char	*fill_temp(char *buffer)
-{
-	
-}
-
 // Lire le file descriptor jusqu au \n ou \0
-char	*read_buffer(int fd, char *line, char *buffer)
+/*char	*read_buffer(int fd, char *line, char *buffer)
 {
 	size_t	nb_read;
 	int		i;
@@ -48,20 +42,51 @@ char	*read_buffer(int fd, char *line, char *buffer)
 	}
 	printf("Avant de return :%s\n", line);
 	return (line);
+}*/
+static char	*cleanup(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
+	return (NULL);
+}
+
+char	*read_and_stock(int fd, char *storage)
+{
+	char	*buffer;
+	int		nb_read;
+	char	*temp;
+
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (NULL);
+	nb_read = 1;
+	if (!storage)
+		storage = ft_strdup("");
+	while (!ft_strchr(storage, '\n') && (nb_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	{
+		if (nb_read < 0)
+			return (free(storage), free(buffer), NULL);
+		buffer[nb_read] = '\0';
+		temp = ft_strjoin(storage, buffer);
+		if (!temp)
+			return (cleanup(buffer, storage));
+		free(storage);
+		storage = temp;
+	}
+	free (buffer);
+	return (storage);
 }
 
 
 char	*get_next_line(int fd)
 {
 	char			*line;
-	char			*buffer;
-	static char		*temp;
+	static char		*storage = NULL;
 	
-	line = NULL;
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
+	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_buffer(fd, line, buffer);
+	line = NULL;
+	printf("--%s\n--", read_and_stock(fd, storage));
 	return (line);
 }
 
@@ -69,8 +94,9 @@ char	*get_next_line(int fd)
 int	main(int ac, char **av)
 {
 	int fd = open(av[1], O_RDONLY);
-	get_next_line(fd);
+	//get_next_line(fd);
 	//printf("%s\n", get_next_line(fd));
+	get_next_line(fd);
 	close (fd);
 	return (0);
 }
