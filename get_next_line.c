@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:08:56 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/03 15:09:33 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/05 15:15:26 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,21 @@ static char	*cleanup(char *s1, char *s2)
 	return (NULL);
 }
 
-char	*share_and_extract(char *storage)
+char	*share_and_extract(char **storage)
 {
-	// Extraire de storage jusqua \n (inclu)
-	// Mettre a jour storage (garder ce qu'il y a apres \n
 	int		i;
 	char	*line;
+	char	*rest;
 
 	i = 0;
-	printf("%s\n", storage);
-	while (storage[i] != '\n' && storage[i])
+	while ((*storage)[i] != '\n' && (*storage)[i])
 		i++;
-	line = ft_substr(storage, 0, i + 1);
-	printf("%s", line);
+	line = ft_substr(*storage, 0, (i + 1));
+	if (!line)
+		return (NULL);
+	rest = ft_strdup(*storage + (i + 1));
+	free(*storage);
+	*storage = rest;
 	return (line);
 }
 
@@ -101,13 +103,17 @@ char	*get_next_line(int fd)
 	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
-	//printf("--%s--\n", read_and_stock(fd, storage));
 	storage = read_and_stock(fd, storage);
-	line = share_and_extract(storage);
+	if (!storage || !*storage)
+		return (NULL);
+	line = share_and_extract(&storage);
+	if (!line)
+		return (NULL);
+	//printf("%s--%s", line, storage);
 	return (line);
 }
 
-
+/*
 int	main(int ac, char **av)
 {
 	int fd = open(av[1], O_RDONLY);
@@ -116,4 +122,4 @@ int	main(int ac, char **av)
 	get_next_line(fd);
 	close (fd);
 	return (0);
-}
+}*/
