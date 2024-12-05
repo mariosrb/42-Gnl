@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:25 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/05 14:59:20 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:25:22 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 7
+#  define BUFFER_SIZE 10
 # endif
 
 # include <stdio.h>
