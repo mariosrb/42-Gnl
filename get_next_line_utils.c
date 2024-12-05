@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:16:29 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/11/28 19:43:11 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:57:53 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*ft_strdup(const char *s1)
 	size_t	size;
 	char	*dest;
 
+	if (!s1)
+		return (NULL);
 	i = 0;
 	size = ft_strlen(s1);
 	dest = malloc(sizeof(char) * (size + 1));
@@ -61,10 +63,12 @@ char	*ft_strdup(const char *s1)
 
 size_t	ft_strlen(const char *str)
 {
-	size_t	i;
+	int	i;
 
+	if (!str)
+		return (0);
 	i = 0;
-	while (str[i] != '\0')
+	while (str[i])
 		i++;
 	return (i);
 }
@@ -91,24 +95,22 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	size_t	i;
 	size_t	j;
 
-	i = 0;
-	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2)); // Si s1 est NULL, retourne une copie de s2
+	if (!s2)
+		return (ft_strdup(s1)); // Si s2 est NULL, retourne une copie de s1
 	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!res)
 		return (NULL);
+	i = 0;
+	j = 0;
 	while (s1[i])
-	{
-		res[j] = s1[i];
-		i++;
-		j++;
-	}
+		res[j++] = s1[i++];
 	i = 0;
 	while (s2[i])
-	{
-		res[j] = s2[i];
-		i++;
-		j++;
-	}
+		res[j++] = s2[i++];
 	res[j] = '\0';
 	return (res);
 }

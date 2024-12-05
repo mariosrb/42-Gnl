@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:08:56 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/05 16:40:58 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:18:16 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*share_and_extract(char **storage)
 	char	*rest;
 
 	i = 0;
-	if (!*storage)
+	if (!*storage || !**storage)
 		return (NULL);
 	while ((*storage)[i] != '\n' && (*storage)[i])
 		i++;
@@ -31,8 +31,20 @@ char	*share_and_extract(char **storage)
 		return (free(line), free(*storage), *storage = NULL, NULL);
 	free(*storage);
 	*storage = rest;
-	if (!*storage)
-		return (free(line), NULL);
+	
+	// i = 0;
+	// if (!*storage || !**storage)
+	// 	return (NULL);
+	// while ((*storage)[i] != '\n' && (*storage)[i])
+	// 	i++;
+	// line = ft_substr(*storage, 0, (*storage)[i] == '\n' ? i + 1 : i);
+	// if (!line)
+	// 	return (free(*storage), *storage = NULL, NULL);
+	// rest = ft_strdup((*storage)[i] == '\n' ? *storage + i + 1 : "");
+	// if (!rest)
+	// 	return (free(line), free(*storage), *storage = NULL, NULL);
+	// free(*storage);
+	// *storage = rest;
 	return (line);
 }
 
@@ -48,12 +60,13 @@ char	*read_and_stock(int fd, char *storage)
 	nb_read = 1;
 	if (!storage)
 		storage = ft_strdup("");
-	if (!storage)
-		return (free(buffer), NULL);
 	while (!ft_strchr(storage, '\n') && (nb_read = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		if (nb_read < 0)
-			return (free(storage), free(buffer), storage = NULL, NULL);
+		// if (nb_read <= 0)
+		// {
+		// 	buffer[0] = '\0';
+		// 	break;
+		// }
 		buffer[nb_read] = '\0';
 		temp = ft_strjoin(storage, buffer);
 		if (!temp)
@@ -61,14 +74,16 @@ char	*read_and_stock(int fd, char *storage)
 		free(storage);
 		storage = temp;
 	}
+	if (nb_read == -1)
+		return (free(storage), free(buffer), storage = NULL, NULL);
 	free (buffer);
 	return (storage);
 }
 
 char	*get_next_line(int fd)
 {
-	static char *storage;
-	char	*line;
+	static char *storage = NULL;
+	char	*line = NULL;
 	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
