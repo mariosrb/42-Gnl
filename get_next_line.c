@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:08:56 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/06 11:45:37 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:53:34 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ char	*read_and_stock(int fd, char *storage)
 	nb_read = 1;
 	if (!storage)
 		storage = ft_strdup("");
-	while (!ft_strchr(storage, '\n') && (nb_read = read(fd, buffer,
-				BUFFER_SIZE)) > 0)
+	while (!ft_strchr(storage, '\n') && nb_read > 0)
 	{
+		nb_read = read(fd, buffer, BUFFER_SIZE);
+		if (nb_read == -1)
+			return (free(storage), free(buffer), storage = NULL, NULL);
 		buffer[nb_read] = '\0';
 		temp = ft_strjoin(storage, buffer);
 		if (!temp)
@@ -62,8 +64,6 @@ char	*read_and_stock(int fd, char *storage)
 		free(storage);
 		storage = temp;
 	}
-	if (nb_read == -1)
-		return (free(storage), free(buffer), storage = NULL, NULL);
 	free(buffer);
 	return (storage);
 }
