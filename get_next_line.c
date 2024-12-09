@@ -6,7 +6,7 @@
 /*   By: mdodevsk <mdodevsk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:08:56 by mdodevsk          #+#    #+#             */
-/*   Updated: 2024/12/06 15:53:34 by mdodevsk         ###   ########.fr       */
+/*   Updated: 2024/12/09 21:06:22 by mdodevsk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*read_and_stock(int fd, char *storage)
 
 char	*get_next_line(int fd)
 {
-	static char	*storage = NULL;
+	static char	*storage;
 	char		*line;
 
 	line = NULL;
